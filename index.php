@@ -15,13 +15,38 @@
 
     </head>
 
-    <div class="login-page">
+    <section class="home-header">
+        <nav>
+            <a href="#">
+                <i class="fas fa-bolt" id="logo"></i>
+            </a>
+        
+            <div class="navlinks">
+                <ul>
+                    <li><a href="">Home</a></li>
+                </ul>
+            </div>
+        
+        </nav>
 
-        <div class="container">
-            <p> test </p>
+        <div class="text-box">
+
+            <h1>Charge, a car dealership.</h1>
+            <p>Use any of the navigation links to continue.</p>
+
+            <div class="home-links">
+                <ul>
+                    <li><button href="">Vehicles</button></li>
+                    <li><button href="">Inventory</button></li>
+                    <li><button href="">Service</button></li>
+                    <li><button href="">Customers</button></li>
+                </ul>
+            </div>
+
         </div>
 
-    </div>
-
+        
+        
+    </section>
 
 </html>
