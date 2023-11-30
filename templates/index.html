@@ -1,12 +1,42 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
-		<meta charset="utf-8">
-		<title>Login</title>
+        <title>Login to Charge</title>
+
+		<meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
 		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
 	</head>
+
 	<body>
-		<p> test </p>
+		
+        <div class="login-page">
+            <div class="login-header">
+                <h1>Hello, please login to the Charge employee system.</h1>
+            </div>
+            <div class="links">
+                <a href="{{ url_for('login') }}" class="active">Login</a>
+                <a href="{{ url_for('register') }}">Register</a>
+            </div>
+
+            <form action="{{ url_for('login') }}" method="post">
+				<label for="username">
+					<i class="fas fa-user"></i>
+				</label>
+				<input type="text" name="username" placeholder="Username" id="username" required>
+				<label for="password">
+					<i class="fas fa-lock"></i>
+				</label>
+				<input type="password" name="password" placeholder="Password" id="password" required>
+				<div class="msg">{{ msg }}</div>
+				<input type="submit" value="Login">
+			</form>
+
+        </div>
+
 	</body>
+
 </html>
