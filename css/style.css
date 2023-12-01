@@ -119,7 +119,7 @@ nav #logo:hover {
 }
 
 .general-header {
-    height: 30vh;
+    height: 35vh;
     width: 100%;
     background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(../img/home-header.jpg);
     background-position: center;

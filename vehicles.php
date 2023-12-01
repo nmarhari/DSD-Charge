@@ -1,3 +1,17 @@
+<?php
+
+    include './config.php';
+
+    // Create a connection
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    // Check the connection before proceeding
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+?>
+
 <!DOCTYPE html>
 <html>
     
@@ -13,32 +27,40 @@
 
     </head>
 
-    <section class="general-header" id="vehicles-header">
-        <nav>
-            <a href="./index.php#">
-                <i class="fas fa-bolt" id="logo"></i>
-            </a>
-        
-            <div class="navlinks">
-                <ul>
-                    <li><a href="./index.php#">Home</a></li>
-                    <li><a href="./vehicles.php#">Vehicles</a></li>
-                    <li><a href="">Inventory</a></li>
-                    <li><a href="">Service</a></li>
-                    <li><a href="">Customers</a></li>
-                </ul>
+    <body>
+
+        <section class="general-header" id="vehicles-header">
+            <nav>
+                <a href="./index.html#">
+                    <i class="fas fa-bolt" id="logo"></i>
+                </a>
+            
+                <div class="navlinks">
+                    <ul>
+                        <li><a href="./index.html#">Home</a></li>
+                        <li><a href="./vehicles.php#">Vehicles</a></li>
+                        <li><a href="">Inventory</a></li>
+                        <li><a href="">Service</a></li>
+                        <li><a href="">Customers</a></li>
+                    </ul>
+                </div>
+            
+            </nav>
+
+            <div class="general-header-text">
+
+                <h1>Vehicles</h1>
+
             </div>
-        
-        </nav>
 
-        <div class="general-header-text">
+            
+            
+        </section>
 
-            <h1>Vehicles</h1>
+        <?php
+            $conn->close();
+        ?>
 
-        </div>
-
-        
-        
-    </section>
+    </body>
 
 </html>
