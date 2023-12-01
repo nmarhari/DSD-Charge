@@ -1,6 +1,5 @@
 * {
     font-family: 'Lato', sans-serif;
-    overflow-x: none;
     margin: 0;
     padding: 0;
 }
@@ -197,3 +196,27 @@ table {
 }
 
 
+.nav-class .icon {
+    display: none;
+}
+
+@media screen and (max-width: 620px) {
+    .nav-class li:not(:last-child){ 
+        display: none; 
+    }
+    .nav-class li.icon {
+        display: inline-block;
+    }
+}
+
+@media screen and (max-width: 620px) {
+    .nav-class.responsive { position: relative;}
+    .nav-class.responsive li {
+        display: block;
+        float: none;
+    }
+}
+
+* {
+    overflow-x: none;
+}

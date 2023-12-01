@@ -25,6 +25,8 @@
 		<link rel="stylesheet" href="./css/style.css">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
 
+        <script src="./js/showNav.js" crossorigin="anonymous"></script>
+
     </head>
 
     <body>
@@ -36,12 +38,17 @@
                 </a>
             
                 <div class="navlinks">
-                    <ul>
+                    <ul class="nav-class" id="nav-id">
                         <li><a href="./index.html#">Home</a></li>
                         <li><a href="./vehicles.php#">Vehicles</a></li>
                         <li><a href="">Inventory</a></li>
                         <li><a href="">Service</a></li>
                         <li><a href="">Customers</a></li>
+                        <li class="icon">
+                            <a href="javascript:void(0);" onclick="showNav()">
+                                <i class="fa fa-bars"></i>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             
