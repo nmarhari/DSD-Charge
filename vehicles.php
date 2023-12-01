@@ -53,8 +53,30 @@
 
             </div>
 
+        </section>
+
+        <section class="content">
+
+            <?php 
             
+                $sql = "SELECT id, name FROM instructor";
+                $result = $conn->query($sql);
+
+                if ($result->num_rows > 0) {
+                    // Create table to output results:
+                    echo "<table class=\"content-table\"><thead><tr><th>ID</th><th>Name</th></tr></thead>";
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tbody><tr><td>".$row["id"]."</td><td>".$row["name"]."</td></tr></tbody>";
+                    }
+                    echo "</table>";
+                    echo "There are ". $result->num_rows . " results.";
+
+                } else {
+                    echo "No results.";
+                }
             
+            ?>
+
         </section>
 
         <?php
