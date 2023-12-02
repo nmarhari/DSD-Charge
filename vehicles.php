@@ -68,74 +68,44 @@
 
         <section class="content">
 
-            <!--<div class="refine-text">
-                <a href=""><p>Refine search results</p></a>
-            </div>
-            
+            <table class="content-table" id="myTable"> 
+                <thead>
+                    <tr>
+                        <th>VIN</th>
+                        <th>Make</th>
+                        <th>Model</th>
+                        <th>Color</th>
+                        <th>Mileage</th>
+                        <th>New</th>
+                        <th>Custom</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php 
+                    
+                        $sqlstatement = $conn->prepare("SELECT VIN, year, make, model, color, mileage, isnew, custom from vehicle");
+                    
+                        $sqlstatement->execute();
+                        $result = $sqlstatement->get_result();
+        
+                        $sqlstatement->close();
 
-            <form class="refine-search" action="vehicles.php" method="get">
-                
-                <p>Sort by: </p>
-                <div class="dropdown">
-                    <select name="sort">
-                        <option value=""> </option>
-                        <option value="mileage">Mileage - Lowest First</option>
-                        <option value="mileage-desc">Mileage - Highest First</option>
-                    </select>
-                </div>
-
-                <p>Filters: </p>
-                Make: <input type="text" size="20" name="make">
-                Model: <input type="text" size="20" name="model">
-                Color: <input type="text" size="20" name="color">
-                <p>Vehicle Properties: </p>
-                <div class="dropdown">
-                    <select name="filters">
-                        <option value=""> </option>
-                        <option value="isnew">New Vehicles Only</option>
-                        <option value="custom">Custom Vehicles Only</option>
-                    </select>
-                </div>
-
-
-                <input type="submit" value="Submit"></input>
-            
-            </form> -->
-
-            <?php 
-            
-                
-                $sqlstatement = $conn->prepare("SELECT VIN, year, make, model, color, mileage, isnew, custom from vehicle");
-                
-                $sqlstatement->execute();
-                $result = $sqlstatement->get_result();
-
-                $sqlstatement->close();
-
-                if ($result->num_rows > 0) {
-                    // Create table to output results:
-                    echo "<table class=\"content-table\" id=\"myTable\"><thead><tr><th>VIN</th><th>Make</th><th>Model</th><th>Color</th><th>Mileage</th><th>IsNew</th><th>Custom</th></tr></thead>";
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<tbody><tr>
-                        <td>".$row["VIN"]."</td>
-                        <td>".$row["make"]."</td>
-                        <td>".$row["model"]."</td>
-                        <td>".$row["color"]."</td>
-                        <td>".$row["mileage"]."</td>
-                        <td>".$row["isnew"]."</td>
-                        <td>".$row["custom"]."</td>
-                        </tr></tbody>";
-                    }
-                    echo "</table>";
-                    //echo "There are ". $result->num_rows . " results.";
-
-                } else {
-                    echo "No results.";
-
-                    echo "<a href=\"vehicles.php\">Click here to reset the table.";
-                }
-            
-            ?>
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<tr>
+                                <td>".$row["VIN"]."</td>
+                                <td>".$row["make"]."</td>
+                                <td>".$row["model"]."</td>
+                                <td>".$row["color"]."</td>
+                                <td>".$row["mileage"]."</td>
+                                <td>".$row["isnew"]."</td>
+                                <td>".$row["custom"]."</td>
+                                </tr>";
+                            }
+                        }
+                    ?>
+                </tbody>
+            </table>
 
         </section>
 
