@@ -117,7 +117,7 @@ nav #logo:hover {
     color: black;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 636px) {
     .home-links li {
         display: grid;
         padding: 0 20vw;
