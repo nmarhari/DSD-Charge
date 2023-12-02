@@ -154,6 +154,10 @@ nav #logo:hover {
     background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(../img/vehicles-header.jpg);
 }
 
+#inventory-header {
+    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(../img/inventory-header.jpg);
+}
+
 .content {
     margin: 24px 0;
     text-align: center;
