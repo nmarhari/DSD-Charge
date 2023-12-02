@@ -64,22 +64,64 @@
 
         <section class="content">
 
+            <a href=""><p>Refine search results</p></a>
+
+            <form class="refine-search" action="vehicles.php" method="get">
+                
+                <p>Sort by: </p>
+                <div class="dropdown">
+                    <select name="sort">
+                        <option value=""> </option>
+                        <option value="mileage">Mileage - Lowest First</option>
+                        <option value="mileage-desc">Mileage - Highest First</option>
+                    </select>
+                </div>
+
+                <input type="submit" value="Submit"></input>
+            
+            </form>
+
             <?php 
             
-                $sql = "SELECT id, name FROM instructor";
-                $result = $conn->query($sql);
+                
+                if (empty($_GET['sort'])) {
+                    $sqlstatement = $conn->prepare("SELECT VIN, year, make, model, color, mileage, isnew, custom from vehicle");
+                } elseif ($_GET['sort'] == 'mileage') {
+                    $sqlstatement = $conn->prepare("SELECT VIN, year, make, model, color, mileage, isnew, custom from vehicle");
+                    $sql = " ORDER BY mileage";
+                    $sqlstatement->bind_param("s",$sql);
+                } elseif ($_GET['sort'] == 'mileage-desc') {
+                    $sqlstatement = $conn->prepare("SELECT VIN, year, make, model, color, mileage, isnew, custom from vehicle");
+                    $sql = " ORDER BY mileage DESC";
+                    $sqlstatement->bind_param("s",$sql);
+                } 
+                
+                $sqlstatement->execute();
+                $result = $sqlstatement->get_result();
+
+                $sqlstatement->close();
 
                 if ($result->num_rows > 0) {
                     // Create table to output results:
-                    echo "<table class=\"content-table\"><thead><tr><th>ID</th><th>Name</th></tr></thead>";
+                    echo "<table class=\"content-table\"><thead><tr><th>VIN</th><th>Make</th><th>Model</th><th>Color</th><th>Mileage</th><th>IsNew</th><th>Custom</th></tr></thead>";
                     while ($row = $result->fetch_assoc()) {
-                        echo "<tbody><tr><td>".$row["id"]."</td><td>".$row["name"]."</td></tr></tbody>";
+                        echo "<tbody><tr>
+                        <td>".$row["VIN"]."</td>
+                        <td>".$row["make"]."</td>
+                        <td>".$row["model"]."</td>
+                        <td>".$row["color"]."</td>
+                        <td>".$row["mileage"]."</td>
+                        <td>".$row["isnew"]."</td>
+                        <td>".$row["custom"]."</td>
+                        </tr></tbody>";
                     }
                     echo "</table>";
                     echo "There are ". $result->num_rows . " results.";
 
                 } else {
                     echo "No results.";
+
+                    echo "<a href=\"vehicles.php\">Click here to reset the table.";
                 }
             
             ?>
