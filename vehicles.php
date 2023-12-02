@@ -24,7 +24,10 @@
 		
 		<link rel="stylesheet" href="./css/style.css">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
-
+        
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+        <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
         <script src="./js/showNav.js" crossorigin="anonymous"></script>
 
     </head>
@@ -42,6 +45,7 @@
                         <li><a href="./index.html#">Home</a></li>
                         <li><a href="./vehicles.php#">Vehicles</a></li>
                         <li><a href="">Inventory</a></li>
+                        <li><a href="">Sales</a></li>
                         <li><a href="">Service</a></li>
                         <li><a href="">Customers</a></li>
                         <li class="icon">
@@ -64,7 +68,7 @@
 
         <section class="content">
 
-            <div class="refine-text">
+            <!--<div class="refine-text">
                 <a href=""><p>Refine search results</p></a>
             </div>
             
@@ -96,33 +100,12 @@
 
                 <input type="submit" value="Submit"></input>
             
-            </form>
+            </form> -->
 
             <?php 
             
                 
-                if (empty($_GET['sort'])) {
-                    $sqlstatement = $conn->prepare("SELECT VIN, year, make, model, color, mileage, isnew, custom from vehicle");
-                } elseif ($_GET['sort'] == 'mileage') {
-                    $sqlstatement = $conn->prepare("SELECT VIN, year, make, model, color, mileage, isnew, custom from vehicle");
-                    $sql = " ORDER BY mileage";
-                    $sqlstatement->bind_param("s",$sql);
-                } elseif ($_GET['sort'] == 'mileage-desc') {
-                    $sqlstatement = $conn->prepare("SELECT VIN, year, make, model, color, mileage, isnew, custom from vehicle");
-                    $sql = " ORDER BY mileage DESC";
-                    $sqlstatement->bind_param("s",$sql);
-                } elseif (!empty($_GET['make']) && empty($_GET['model']) && empty($_GET['color'])) {
-                    $make = $_GET["make"];
-                    $sqlstatement = $conn->prepare("SELECT VIN, year, make, model, color, mileage, isnew, custom from vehicle where make=?");
-                    $sqlstatement->bind_param("s",$make);
-                } elseif (!empty($_GET['make']) && !empty($_GET['model']) && empty($_GET['color'])) {
-                    $make = $_GET["make"];
-                    $model = $_GET["model"];
-                    $sqlstatement = $conn->prepare("SELECT VIN, year, make, model, color, mileage, isnew, custom from vehicle where make=? and model=?");
-                    $sqlstatement->bind_param("ss",$make,$model);
-                } //else {
-                   // $sqlstatement = $conn->prepare("SELECT VIN, year, make, model, color, mileage, isnew, custom from vehicle");
-                //}
+                $sqlstatement = $conn->prepare("SELECT VIN, year, make, model, color, mileage, isnew, custom from vehicle");
                 
                 $sqlstatement->execute();
                 $result = $sqlstatement->get_result();
@@ -131,7 +114,7 @@
 
                 if ($result->num_rows > 0) {
                     // Create table to output results:
-                    echo "<table class=\"content-table\"><thead><tr><th>VIN</th><th>Make</th><th>Model</th><th>Color</th><th>Mileage</th><th>IsNew</th><th>Custom</th></tr></thead>";
+                    echo "<table class=\"content-table\" id=\"myTable\"><thead><tr><th>VIN</th><th>Make</th><th>Model</th><th>Color</th><th>Mileage</th><th>IsNew</th><th>Custom</th></tr></thead>";
                     while ($row = $result->fetch_assoc()) {
                         echo "<tbody><tr>
                         <td>".$row["VIN"]."</td>
@@ -144,7 +127,7 @@
                         </tr></tbody>";
                     }
                     echo "</table>";
-                    echo "There are ". $result->num_rows . " results.";
+                    //echo "There are ". $result->num_rows . " results.";
 
                 } else {
                     echo "No results.";
@@ -159,6 +142,13 @@
         <?php
             $conn->close();
         ?>
+
+        <script>
+            $(document).ready(function() {
+                $('#myTable').DataTable();
+            });
+        </script>
+
 
     </body>
 
