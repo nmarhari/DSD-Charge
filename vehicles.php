@@ -68,10 +68,63 @@
 
         <section class="content">
 
+            <div class="vehicle-entry">
+                <h1>New Vehicle Entry Form:</h1>
+
+                <form action="vehicles.php" method="get">
+                    <p>Enter Vehicle VIN:</p> <input type="text" size="17" minlength="17" name="VIN">
+                    <p>Enter Vehicle Year:</p> <input type="text" size="4" name="year">
+                    <p>Enter Vehicle Make:</p> <input type="text" size="20" name="make">
+                    <p>Enter Vehicle Model:</p> <input type="text" size="20" name="model">
+                    <p>Enter Vehicle Color:</p> <input type="text" size="20" name="color">
+                    <p>Enter Vehicle Mileage:</p> <input type="text" size="9" name="mileage">
+                    <p>Is the Vehicle New?</p>
+                    <input type="radio" name="isnew" value="Yes">Yes</input>
+                    <input type="radio" name="isnew" value="No" checked>No</input>
+                    <p>Is the Vehicle a Custom Vehicle?</p>
+                    <input type="radio" name="custom" value="Yes">Yes</input>
+                    <input type="radio" name="custom" value="No" checked>No</input>
+                    <br>
+                    <input type="hidden" name="form_submitted" value="1">
+                    <input type="submit" value="Submit">
+                    
+            </div>
+
+            <?php 
+            
+                if (isset($_GET["form_submitted"])) {
+                    if (!empty($_GET["VIN"]) && !empty($_GET["year"]) && !empty($_GET["make"]) && !empty($_GET["model"]) && !empty($_GET["color"]) && !empty($_GET["mileage"]) && !empty($_GET["isnew"]) && !empty($_GET["custom"])) {
+                        $VIN = $_GET["VIN"];
+                        $year = $_GET["year"];
+                        $make = $_GET["make"];
+                        $model = $_GET["model"];
+                        $color = $_GET["color"];
+                        $mileage = $_GET["mileage"];
+                        $isnew = $_GET["isnew"];
+                        $custom = $_GET["custom"];
+
+                        $sql = $conn->prepare("INSERT INTO vehicle values(?,?,?,?,?,?,?,?)");
+                        $sql->bind_param("sisssdss", $VIN, $year, $make, $model, $color, $mileage, $isnew, $custom);
+                        $sql->execute();
+                        echo $sql->error;
+                        $sql->close();
+                    }
+                }
+
+            ?>
+
+
+            <h2>Current Vehicles Registered at Charge</h2>
             <table class="content-table" id="myTable"> 
+
+               
+
+                <hr>
+
                 <thead>
                     <tr>
                         <th>VIN</th>
+                        <th>Year</th>
                         <th>Make</th>
                         <th>Model</th>
                         <th>Color</th>
@@ -94,6 +147,7 @@
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>
                                 <td>".$row["VIN"]."</td>
+                                <td>".$row["year"]."</td>
                                 <td>".$row["make"]."</td>
                                 <td>".$row["model"]."</td>
                                 <td>".$row["color"]."</td>
