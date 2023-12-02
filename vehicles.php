@@ -64,7 +64,10 @@
 
         <section class="content">
 
-            <a href=""><p>Refine search results</p></a>
+            <div class="refine-text">
+                <a href=""><p>Refine search results</p></a>
+            </div>
+            
 
             <form class="refine-search" action="vehicles.php" method="get">
                 
@@ -76,6 +79,20 @@
                         <option value="mileage-desc">Mileage - Highest First</option>
                     </select>
                 </div>
+
+                <p>Filters: </p>
+                Make: <input type="text" size="20" name="make">
+                Model: <input type="text" size="20" name="model">
+                Color: <input type="text" size="20" name="color">
+                <p>Vehicle Properties: </p>
+                <div class="dropdown">
+                    <select name="filters">
+                        <option value=""> </option>
+                        <option value="isnew">New Vehicles Only</option>
+                        <option value="custom">Custom Vehicles Only</option>
+                    </select>
+                </div>
+
 
                 <input type="submit" value="Submit"></input>
             
@@ -94,7 +111,18 @@
                     $sqlstatement = $conn->prepare("SELECT VIN, year, make, model, color, mileage, isnew, custom from vehicle");
                     $sql = " ORDER BY mileage DESC";
                     $sqlstatement->bind_param("s",$sql);
-                } 
+                } elseif (!empty($_GET['make']) && empty($_GET['model']) && empty($_GET['color'])) {
+                    $make = $_GET["make"];
+                    $sqlstatement = $conn->prepare("SELECT VIN, year, make, model, color, mileage, isnew, custom from vehicle where make=?");
+                    $sqlstatement->bind_param("s",$make);
+                } elseif (!empty($_GET['make']) && !empty($_GET['model']) && empty($_GET['color'])) {
+                    $make = $_GET["make"];
+                    $model = $_GET["model"];
+                    $sqlstatement = $conn->prepare("SELECT VIN, year, make, model, color, mileage, isnew, custom from vehicle where make=? and model=?");
+                    $sqlstatement->bind_param("ss",$make,$model);
+                } //else {
+                   // $sqlstatement = $conn->prepare("SELECT VIN, year, make, model, color, mileage, isnew, custom from vehicle");
+                //}
                 
                 $sqlstatement->execute();
                 $result = $sqlstatement->get_result();
