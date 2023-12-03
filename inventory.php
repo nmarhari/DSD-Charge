@@ -66,6 +66,24 @@
 
         </section>
 
+        <section class="content">
+
+            <section class="inventory operations">
+                <h1><a href="">View All Inventory</a></h1>
+                <h1><a href="">View Vehicles For Sale</a><h1>
+                <h1><a href="">View Custom Vehicles</a><h1>
+                <h1><a href="">View New Vehicles</a><h1>
+                <div class="inventory-price">
+                    <form action="inventory.php" method="get">
+                    <p>Desired Price Limit:</p> <input type="text" size="10" name="price">
+                    <input type="submit" value="Go">
+                    </form>
+                </div>
+                
+            </section>
+
+        </section>
+
 
 
         <?php
