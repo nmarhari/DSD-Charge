@@ -68,19 +68,65 @@
 
         <section class="content">
 
-            <section class="inventory operations">
-                <h1><a href="">View All Inventory</a></h1>
-                <h1><a href="">View Vehicles For Sale</a><h1>
-                <h1><a href="">View Custom Vehicles</a><h1>
-                <h1><a href="">View New Vehicles</a><h1>
+            <div class="inventory operations">
+                <h1><a href="./inventory.php">View All Inventory</a></h1>
+                <h1><a href="./inventory.php?query=forsale">View Vehicles Not Reserved</a><h1>
                 <div class="inventory-price">
                     <form action="inventory.php" method="get">
-                    <p>Desired Price Limit:</p> <input type="text" size="10" name="price">
+                    <p>View Vehicles By Desired Price Limit:</p> <input type="text" size="10" name="price">
                     <input type="submit" value="Go">
                     </form>
                 </div>
                 
-            </section>
+            </div>
+
+            <h1>Search results:</h1>
+            <table class="content-table" id="myTable"> 
+
+               
+
+                <hr>
+
+                <thead>
+                    <tr>
+                        <th>Inventory ID</th>
+                        <th>VIN</th>
+                        <th>Intake Date</th>
+                        <th>Reserved</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php 
+                    
+                        $query = $_GET["query"];
+
+                        if ($query == "forsale") {
+                            $sqlstatement = $conn->prepare("SELECT Inventory_ID, VIN, intake_date, reserved, price from inventory WHERE reserved = \"No\"");
+                        }  else { // catch all
+                            $sqlstatement = $conn->prepare("SELECT Inventory_ID, VIN, intake_date, reserved, price from inventory");
+                        }
+
+                    
+                        $sqlstatement->execute();
+                        $result = $sqlstatement->get_result();
+        
+                        $sqlstatement->close();
+
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<tr>
+                                <td>".$row["Inventory_ID"]."</td>
+                                <td>".$row["VIN"]."</td>
+                                <td>".$row["intake_date"]."</td>
+                                <td>".$row["reserved"]."</td>
+                                <td>".$row["price"]."</td>
+                                </tr>";
+                            }
+                        }
+                    ?>
+                </tbody>
+            </table>
 
         </section>
 
