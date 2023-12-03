@@ -228,7 +228,13 @@ hr {
 }
 
 .inventory-operations a {
-    text-decoration: none;
+    text-decoration: underline;
+    color: black;
+}
+
+td a {
+    color: black;
+    text-decoration: underline;
 }
 
 .content h2 {
