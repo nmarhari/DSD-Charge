@@ -190,9 +190,46 @@
 
             ?>
 
+            <div class="inventory-entry">
+                <h1>New Inventory Entry Form:</h1>
+
+                <form action="inventory.php" method="get">
+                    <p>Enter a New Vehicle Inventory ID:</p> <input type="text" size="9" minlength="9" name="Inventory_ID">
+                    <p>Enter Vehicle VIN:</p> <input type="text" size="17" minlength="17" name="VIN">
+                    <p>Is the Vehicle Reserved?</p>
+                    <input type="radio" name="reserved" value="Yes">Yes</input>
+                    <input type="radio" name="reserved" value="No" checked>No</input>
+                    <p>Enter Vehicle Price:</p> <input type="text" size="10" name="vehprice">
+                    <input type="hidden" name="form_submitted" value="1">
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
+
+            <?php 
+            
+                if (isset($_GET["form_submitted"])) {
+                    if (!empty($_GET["Inventory_ID"]) && !empty($_GET["VIN"]) && !empty($_GET["reserved"]) && !empty($_GET["vehprice"])) {
+                        $Inventory_ID = $_GET["Inventory_ID"];
+                        $VIN = $_GET["VIN"];
+                        $reserved = $_GET["reserved"];
+                        $price = $_GET["vehprice"];
+
+                        $sql = $conn->prepare("INSERT INTO inventory (Inventory_ID, VIN, reserved, price) VALUES(?,?,?,?)");
+                        $sql->bind_param("sssd", $Inventory_ID, $VIN, $reserved, $price);
+                        $sql->execute();
+                        echo $sql->error;
+                        $sql->close();
+                    } else {
+                        echo "Please fill in all of the vehicle's information.";
+                    }
+                }
+
+            ?>
+
         </section>
 
 
+        
 
         <?php
             $conn->close();
