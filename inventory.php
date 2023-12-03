@@ -68,7 +68,7 @@
 
         <section class="content">
 
-            <div class="inventory operations">
+            <div class="inventory-operations">
                 <h1><a href="./inventory.php">View All Inventory</a></h1>
                 <h1><a href="./inventory.php?query=forsale">View Vehicles Not Reserved</a><h1>
                 <div class="inventory-price">
@@ -80,7 +80,7 @@
                 
             </div>
 
-            <h1>Search results:</h1>
+            <h2>Search results:</h2>
             <table class="content-table" id="myTable"> 
 
                
@@ -191,7 +191,7 @@
             ?>
 
             <div class="inventory-entry">
-                <h1>New Inventory Entry Form:</h1>
+                <h2>New Inventory Entry Form:</h2>
 
                 <form action="inventory.php" method="get">
                     <p>Enter a New Vehicle Inventory ID:</p> <input type="text" size="9" minlength="9" name="Inventory_ID">

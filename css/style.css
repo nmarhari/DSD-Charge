@@ -215,6 +215,26 @@ table {
     display: none;
 }
 
+.vehicle-entry {
+    padding: 20px 0;
+}
+
+hr {
+    margin: 14px 0;
+}
+
+.inventory-operations h1 {
+    padding: 8px 0;
+}
+
+.inventory-operations a {
+    text-decoration: none;
+}
+
+.content h2 {
+    padding-top: 14px;
+}
+
 @media screen and (max-width: 620px) {
     .nav-class li:not(:last-child){ 
         display: none; 
