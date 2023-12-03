@@ -107,6 +107,12 @@
                             $sqlstatement = $conn->prepare("SELECT Inventory_ID, VIN, intake_date, reserved, price from inventory");
                         }
 
+                        if (!empty($_GET["price"])) {
+                            $price = $_GET["price"];
+                            $sqlstatement = $conn->prepare("SELECT Inventory_ID, VIN, intake_date, reserved, price from inventory WHERE reserved = \"No\" AND price < ?");
+                            $sqlstatement->bind_param("d", $price);
+                        }
+
                     
                         $sqlstatement->execute();
                         $result = $sqlstatement->get_result();
@@ -117,7 +123,7 @@
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>
                                 <td>".$row["Inventory_ID"]."</td>
-                                <td>".$row["VIN"]."</td>
+                                <td><a href=\"./inventory.php?VIN=".$row["VIN"]."\">".$row["VIN"]."</td>
                                 <td>".$row["intake_date"]."</td>
                                 <td>".$row["reserved"]."</td>
                                 <td>".$row["price"]."</td>
@@ -127,6 +133,62 @@
                     ?>
                 </tbody>
             </table>
+
+            <?php 
+            
+                if (!empty($_GET["VIN"])) {
+                    echo "
+                        <h1>Selected Vehicle Info</h1>
+                        <div class=\"vehicle-info\">
+                            <table class=\"content-table\" id=\"myTable\"> 
+
+                    
+
+                            <hr>
+            
+                            <thead>
+                                <tr>
+                                    <th>VIN</th>
+                                    <th>Year</th>
+                                    <th>Make</th>
+                                    <th>Model</th>
+                                    <th>Color</th>
+                                    <th>Mileage</th>
+                                    <th>New</th>
+                                    <th>Custom</th>
+                                </tr>
+                            </thead>
+                            <tbody>";
+                            
+                            $vinfo = $conn->prepare("SELECT VIN, year, make, model, color, mileage, isnew, custom from vehicle WHERE VIN = ?");
+                            $VIN = $_GET["VIN"];
+
+                            $vinfo->bind_param("s", $VIN);
+
+                            $vinfo->execute();
+                            $resultvinfo = $vinfo->get_result();
+            
+                            $vinfo->close();
+    
+                            if ($resultvinfo->num_rows > 0) {
+                                while ($row = $resultvinfo->fetch_assoc()) {
+                                    echo "<tr>
+                                    <td>".$row["VIN"]."</td>
+                                    <td>".$row["year"]."</td>
+                                    <td>".$row["make"]."</td>
+                                    <td>".$row["model"]."</td>
+                                    <td>".$row["color"]."</td>
+                                    <td>".$row["mileage"]."</td>
+                                    <td>".$row["isnew"]."</td>
+                                    <td>".$row["custom"]."</td>
+                                    </tr>";
+                                }
+                            }
+                    echo "</tbody></table>";
+
+                }
+
+            ?>
 
         </section>
 
