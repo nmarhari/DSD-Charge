@@ -73,8 +73,8 @@
                 <h1><a href="./inventory.php?query=forsale">View Vehicles Not Reserved</a><h1>
                 <div class="inventory-price">
                     <form action="inventory.php" method="get">
-                    <p>View Vehicles By Desired Price Limit:</p> <input type="text" size="10" name="price">
-                    <input type="submit" value="Go">
+                        <p>View Vehicles By Desired Price Limit:</p> <input type="text" size="10" name="price">
+                        <input type="submit" value="Go">
                     </form>
                 </div>
                 

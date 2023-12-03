@@ -235,18 +235,13 @@ hr {
     margin: 14px 0;
 }
 
-.inventory-operations h1 {
+.content h1 {
     padding: 8px 0;
 }
 
-.inventory-operations a {
+.content a {
     text-decoration: underline;
     color: black;
-}
-
-td a {
-    color: black;
-    text-decoration: underline;
 }
 
 .content h2 {

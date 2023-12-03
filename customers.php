@@ -68,12 +68,93 @@
 
         <section class="content">
 
+            <div class="customer-entry">
+                <h1>New Customer Entry Form:</h1>
+
+                <form action="customers.php" method="get">
+                    <p>Enter a new Customer ID:</p> <input type="text" size="10" minlength="9" name="Customer_ID">
+                    <p>Enter Customer's First Name:</p> <input type="text" size="20" name="first_name">
+                    <p>Enter Customer's Last Name:</p> <input type="text" size="20" name="last_name">
+                    <p>Enter Customer's Email:</p> <input type="text" size="40" minlength="5" name="email">
+                    <p>Enter Customer's Phone Number:</p> <input type="text" size="15" minlength="5" name="phone_number">
+                    <p>Enter Customer's Phone Type:</p> <input type="text" size="10" name="type">
+                    <input type="hidden" name="form_submitted" value="1">
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
+
+            <?php 
             
+                if (isset($_GET["form_submitted"])) {
+                    if (!empty($_GET["Customer_ID"]) && !empty($_GET["first_name"]) && !empty($_GET["last_name"]) && !empty($_GET["email"]) && !empty($_GET["phone_number"]) && !empty($_GET["type"])) {
+                        $Customer_ID = $_GET["Customer_ID"];
+                        $first_name = $_GET["first_name"];
+                        $last_name = $_GET["last_name"];
+                        $email = $_GET["email"];
+                        $phone_number = $_GET["phone_number"];
+                        $type = $_GET["type"];
+
+                        $sql = $conn->prepare("INSERT INTO customer (CUSTOMER_ID, first_name, last_name, email) VALUES(?,?,?,?)");
+                        $sql->bind_param("ssss", $Customer_ID, $first_name, $last_name, $email);
+                        $sql->execute();
+                        $sqlphone = $conn->prepare("INSERT INTO customer_phone (CUSTOMER_ID, phone_number, type VALUES(?,?,?)");
+                        $sqlphone->bind_param("sss", $Customer_ID, $phone_number, $email);
+                        echo $sql->error;
+                        echo $sqlphone->error;
+                        $sql->close();
+                        $sqlphone->close();
+                    } else {
+                        echo "Please fill in all of the customer's information.";
+                    }
+                }
+
+            ?>
+
+            <h2>All Customers:</h2>
+            <table class="content-table" id="myTable"> 
+
+            <hr>
+
+            <thead>
+                <tr>
+                    <th>Customer ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Phone Number(s)</th>
+                    <th>Phone Type</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <?php 
+
+                    $sqlstatement = $conn->prepare("SELECT customer.CUSTOMER_ID, first_name, last_name, email, phone_number, type FROM customer JOIN customer_phone");
+                    
+                    $sqlstatement->execute();
+                    $result = $sqlstatement->get_result();
+        
+                    $sqlstatement->close();
+
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<tr>
+                            <td>".$row["CUSTOMER_ID"]."</td>
+                            <td>".$row["first_name"]."</td>
+                            <td>".$row["last_name"]."</td>
+                            <td>".$row["email"]."</td>
+                            <td>".$row["phone_number"]."</td>
+                            <td>".$row["type"]."</td>
+                            </tr>";
+                        }
+                    }
+
+                ?>
+
+            </tbody>
+            </table>
 
         </section>
-
-
-        
 
         <?php
             $conn->close();

@@ -87,7 +87,7 @@
                     <br>
                     <input type="hidden" name="form_submitted" value="1">
                     <input type="submit" value="Submit">
-                    
+                </form>
             </div>
 
             <?php 
