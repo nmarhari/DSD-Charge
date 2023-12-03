@@ -94,15 +94,18 @@
                         $phone_number = $_GET["phone_number"];
                         $type = $_GET["type"];
 
-                        $sql = $conn->prepare("INSERT INTO customer (CUSTOMER_ID, first_name, last_name, email) VALUES(?,?,?,?)");
+                        $sql = $conn->prepare("INSERT INTO customer (CUSTOMER_ID, first_name, last_name, email) VALUES(?,?,?,?)"); 
                         $sql->bind_param("ssss", $Customer_ID, $first_name, $last_name, $email);
                         $sql->execute();
-                        $sqlphone = $conn->prepare("INSERT INTO customer_phone (CUSTOMER_ID, phone_number, type VALUES(?,?,?)");
-                        $sqlphone->bind_param("sss", $Customer_ID, $phone_number, $email);
                         echo $sql->error;
-                        echo $sqlphone->error;
                         $sql->close();
+
+                        $sqlphone = $conn->prepare("INSERT INTO customer_phone (CUSTOMER_ID, phone_number, type) VALUES (?,?,?)");
+                        $sqlphone->bind_param("sss", $Customer_ID, $phone_number, $type);
+                        $sqlphone->execute();
+                        echo $sqlphone->error;
                         $sqlphone->close();
+                        
                     } else {
                         echo "Please fill in all of the customer's information.";
                     }
@@ -129,7 +132,7 @@
 
                 <?php 
 
-                    $sqlstatement = $conn->prepare("SELECT customer.CUSTOMER_ID, first_name, last_name, email, phone_number, type FROM customer JOIN customer_phone");
+                    $sqlstatement = $conn->prepare("SELECT customer.CUSTOMER_ID, first_name, last_name, email, phone_number, type FROM customer NATURAL JOIN customer_phone");
                     
                     $sqlstatement->execute();
                     $result = $sqlstatement->get_result();
