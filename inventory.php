@@ -46,8 +46,8 @@
                         <li><a href="./vehicles.php#">Vehicles</a></li>
                         <li><a href="./inventory.php#">Inventory</a></li>
                         <li><a href="./sales.php#">Sales</a></li>
-                        <li><a href="">Service</a></li>
-                        <li><a href="">Customers</a></li>
+                        <li><a href="./service.php#">Service</a></li>
+                        <li><a href="./customers.php#">Customers</a></li>
                         <li class="icon">
                             <a href="javascript:void(0);" onclick="showNav()">
                                 <i class="fa fa-bars"></i>
