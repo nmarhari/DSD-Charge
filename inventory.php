@@ -44,8 +44,8 @@
                     <ul class="nav-class" id="nav-id">
                         <li><a href="./index.html#">Home</a></li>
                         <li><a href="./vehicles.php#">Vehicles</a></li>
-                        <li><a href="./inventory.php">Inventory</a></li>
-                        <li><a href="">Sales</a></li>
+                        <li><a href="./inventory.php#">Inventory</a></li>
+                        <li><a href="./sales.php#">Sales</a></li>
                         <li><a href="">Service</a></li>
                         <li><a href="">Customers</a></li>
                         <li class="icon">
