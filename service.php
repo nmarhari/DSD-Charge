@@ -206,6 +206,43 @@
 
             ?>
 
+            <?php 
+                
+                if (!empty($_GET["VININFO"])) {
+                    echo "
+                        <div class=\"vehicle-info\">
+                            <table class=\"content-table\" id=\"myTable\"> 
+            
+                            <thead>
+                                <tr>
+                                    <th>Service Cost Over the Life of the Vehicle</th>
+                                </tr>
+                            </thead>
+                            <tbody>";
+                            
+                            $sinfo = $conn->prepare("SELECT sum(service_cost) as sum_service FROM service WHERE VIN = ?");
+                            $VIN = $_GET["VININFO"];
+
+                            $sinfo->bind_param("s", $VIN);
+
+                            $sinfo->execute();
+                            $resultsinfo = $sinfo->get_result();
+            
+                            $sinfo->close();
+
+                            if ($resultsinfo->num_rows > 0) {
+                                while ($row = $resultsinfo->fetch_assoc()) {
+                                    echo "<tr>
+                                    <td>".$row["sum_service"]."</td>
+                                    </tr>";
+                                }
+                            }
+                    echo "</tbody></table>";
+
+                }
+
+            ?>
+
         </section>
 
         <?php
