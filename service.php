@@ -75,8 +75,9 @@
                     <p>Enter A New Service ID:</p> <input type="text" size="10" minlength="9" name="service_ID">
                     <p>Enter Vehicle VIN:</p> <input type="text" size="17" minlength="17" name="VIN">
                     <p>Enter Service Type:</p> <input type="text" size="20" name="service_type">
-                    <p>Enter Service Cost:</p> <input type="text" size="10" name="service_cost">                  
-                    <p>Comments:</p> <input type="text" size="200" name="comments" class="commentbox">
+                    <p>Enter Service Cost:</p> <input type="text" size="10" name="service_cost">    
+                    <p>Comments:</p> <textarea type="text" size="200" name="comments" class="commentbox"></textarea>
+                    <br>           
                     <input type="hidden" name="form_submitted" value="1">
                     <input type="submit" value="Submit">
                 </form>
@@ -104,6 +105,7 @@
                         
                         
             ?>
+
             <h2>All Past Services:</h2>
             <table class="content-table" id="myTable"> 
 
