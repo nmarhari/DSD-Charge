@@ -265,17 +265,16 @@ hr {
     }
 }
 
-* {
-    overflow-x: none;
-}
-
 .commentbox {
-    width: 50%;
+    max-width: 25%;
     height: 100px;
+    resize: vertical;
     text-wrap: wrap;
     vertical-align: text-top;
 }
 
-.service-entry {
-    padding: 20px 0;
+* {
+    overflow-x: none;
 }
+
+

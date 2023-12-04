@@ -73,7 +73,7 @@
                 
             </div>
 
-            <div class="customer-entry">
+            <div class="sales-entry">
                 <h1>Register a New Sale:</h1>
 
                 <form action="sales.php" method="get">

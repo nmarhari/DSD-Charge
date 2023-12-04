@@ -72,30 +72,27 @@
                 <h1>Service Request Form:</h1>
 
                 <form action="service.php" method="get">
-                    <p>Enter A New Service ID:</p> <input type="text" size="17"  name="service_ID">
+                    <p>Enter A New Service ID:</p> <input type="text" size="10" minlength="9" name="service_ID">
                     <p>Enter Vehicle VIN:</p> <input type="text" size="17" minlength="17" name="VIN">
-                    <p>Enter Service Request:</p> <input type="text" size="20" name="service_type">
-                    <p>Enter Service Request Date:</p> <input type="text" size="20" name="service_date">
-                    <p>Enter Service Cost:</p> <input type="text" size="20" name="service_cost">                  
-                    <p>Comments:</p> <input type="text" size="40" name="Comments" class="commentbox">
-                    <br>
+                    <p>Enter Service Type:</p> <input type="text" size="20" name="service_type">
+                    <p>Enter Service Cost:</p> <input type="text" size="10" name="service_cost">                  
+                    <p>Comments:</p> <input type="text" size="200" name="comments" class="commentbox">
                     <input type="hidden" name="form_submitted" value="1">
-                    <p><input type="submit" value="Submit"></p>
+                    <input type="submit" value="Submit">
                 </form>
             </div>
 
             <?php 
                 if (isset($_GET["form_submitted"])) {
-                    if (!empty($_GET["service_ID"]) && !empty($_GET["VIN"]) && !empty($_GET["service_type"]) && !empty($_GET["service_date"]) && !empty($_GET["service_cost"])) {
+                    if (!empty($_GET["service_ID"]) && !empty($_GET["VIN"]) && !empty($_GET["service_type"]) && !empty($_GET["service_cost"])) {
                         $service_ID = $_GET["service_ID"];
                         $VIN = $_GET["VIN"];
                         $service_type = $_GET["service_type"];
-                        $service_date = $_GET["service_date"];
                         $service_cost = $_GET["service_cost"];
                         $comments = $_GET["comments"];
 
-                        $sql = $conn->prepare("INSERT INTO service (service_ID, VIN, type, service_date, service_cost, comments) VALUES(?,?,?,?,?,?)"); 
-                        $sql->bind_param("ssssss", $service_ID, $VIN, $service_type, $service_date, $service_cost, $comments);
+                        $sql = $conn->prepare("INSERT INTO service (service_ID, VIN, type, service_cost, comments) VALUES(?,?,?,?,?)"); 
+                        $sql->bind_param("sssss", $service_ID, $VIN, $service_type, $service_cost, $comments);
                         $sql->execute();
                         echo $sql->error;
                         $sql->close();
@@ -107,48 +104,48 @@
                         
                         
             ?>
-            <h2>All Customers:</h2>
-            <table class="content-table" id="serviceTable"> 
+            <h2>All Past Services:</h2>
+            <table class="content-table" id="myTable"> 
 
-                <hr>
+            <hr>
 
-                <thead>
-                    <tr>
-                        <th>Service ID</th>
-                        <th>VIN</th>
-                        <th>Service Type</th>
-                        <th>Service Request Date</th>
-                        <th>Service Cost</th>
-                        <th>Comments</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <thead>
+                <tr>
+                    <th>Service ID</th>
+                    <th>VIN</th>
+                    <th>Service Date</th>
+                    <th>Service Type</th>
+                    <th>Service Cost</th>
+                    <th>Comments</th>
+                </tr>
+            </thead>
+            <tbody>
 
-                    <?php 
+                <?php 
 
-                        $sqlstatement = $conn->prepare("SELECT customer.CUSTOMER_ID, first_name, last_name, email, phone_number, type FROM customer NATURAL JOIN customer_phone");
+                    $sqlstatement = $conn->prepare("SELECT SERVICE_ID, VIN, service_date, type, service_cost, comments FROM service");
             
-                        $sqlstatement->execute();
-                        $result = $sqlstatement->get_result();
+                    $sqlstatement->execute();
+                    $result = $sqlstatement->get_result();
 
-                        $sqlstatement->close();
+                    $sqlstatement->close();
 
-                        if ($result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
-                                echo "<tr>
-                                <td>".$row["service_ID"]."</td>
-                                <td>".$row["VIN"]."</td>
-                                <td>".$row["service_type"]."</td>
-                                <td>".$row["service_date"]."</td>
-                                <td>".$row["service_cost"]."</td>
-                                <td>".$row["commentbox"]."</td>
-                                </tr>";
-                            }
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<tr>
+                            <td>".$row["SERVICE_ID"]."</td>
+                            <td>".$row["VIN"]."</td>
+                            <td>".$row["service_date"]."</td>
+                            <td>".$row["type"]."</td>
+                            <td>".$row["service_cost"]."</td>
+                            <td>".$row["comments"]."</td>
+                            </tr>";
                         }
+                    }
 
-                    ?>
+                ?>
 
-                </tbody>
+            </tbody>
             </table>
 
         </section>
@@ -159,7 +156,7 @@
 
         <script>
             $(document).ready(function() {
-                $('#serviceTable').DataTable();
+                $('#myTable').DataTable();
             });
         </script>
 
