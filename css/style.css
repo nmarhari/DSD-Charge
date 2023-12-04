@@ -265,9 +265,6 @@ hr {
     }
 }
 
-form {
-    max-width: 60vw;
-}
 
 form .commentbox {
     resize: vertical;
