@@ -68,6 +68,43 @@
 
         <section class="content">
 
+        <div class="inventory-entry">
+                <h2>New Inventory Entry Form:</h2>
+
+                <form action="inventory.php" method="get">
+                    <p>Enter a New Vehicle Inventory ID:</p> <input type="text" size="9" minlength="9" name="Inventory_ID">
+                    <p>Enter Vehicle VIN:</p> <input type="text" size="17" minlength="17" name="VIN">
+                    <p>Is the Vehicle Reserved?</p>
+                    <input type="radio" name="reserved" value="Yes">Yes</input>
+                    <input type="radio" name="reserved" value="No" checked>No</input>
+                    <p>Enter Vehicle Price:</p> <input type="text" size="10" name="vehprice">
+                    <br>
+                    <input type="hidden" name="form_submitted" value="1">
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
+
+            <?php 
+            
+                if (isset($_GET["form_submitted"])) {
+                    if (!empty($_GET["Inventory_ID"]) && !empty($_GET["VIN"]) && !empty($_GET["reserved"]) && !empty($_GET["vehprice"])) {
+                        $Inventory_ID = $_GET["Inventory_ID"];
+                        $VIN = $_GET["VIN"];
+                        $reserved = $_GET["reserved"];
+                        $price = $_GET["vehprice"];
+
+                        $sql = $conn->prepare("INSERT INTO inventory (Inventory_ID, VIN, reserved, price) VALUES(?,?,?,?)");
+                        $sql->bind_param("sssd", $Inventory_ID, $VIN, $reserved, $price);
+                        $sql->execute();
+                        echo $sql->error;
+                        $sql->close();
+                    } else {
+                        echo "Please fill in all of the vehicle's information.";
+                    }
+                }
+
+            ?>
+
             <div class="inventory-operations">
                 <h1><a href="./inventory.php">View All Inventory</a></h1>
                 <h1><a href="./inventory.php?query=forsale">View Vehicles Not Reserved</a><h1>
@@ -80,17 +117,20 @@
                 
             </div>
 
+
             <h2>Search results:</h2>
             <table class="content-table" id="myTable"> 
-
-               
 
                 <hr>
 
                 <thead>
                     <tr>
                         <th>Inventory ID</th>
-                        <th>VIN</th>
+                        <th>Year</th>
+                        <th>Make</th>
+                        <th>Model</th>
+                        <th>Color</th>
+                        <th>Mileage</th>
                         <th>Intake Date</th>
                         <th>Reserved</th>
                         <th>Price</th>
@@ -102,14 +142,14 @@
                         $query = $_GET["query"];
 
                         if ($query == "forsale") {
-                            $sqlstatement = $conn->prepare("SELECT Inventory_ID, VIN, intake_date, reserved, price from inventory WHERE reserved = \"No\"");
+                            $sqlstatement = $conn->prepare("SELECT Inventory_ID, inventory.VIN, year, make, model, color, mileage, intake_date, reserved, price FROM inventory NATURAL JOIN vehicle WHERE reserved = \"No\"");
                         }  else { // catch all
-                            $sqlstatement = $conn->prepare("SELECT Inventory_ID, VIN, intake_date, reserved, price from inventory");
+                            $sqlstatement = $conn->prepare("SELECT Inventory_ID, inventory.VIN, year, make, model, color, mileage, intake_date, reserved, price FROM inventory NATURAL JOIN vehicle");
                         }
 
                         if (!empty($_GET["price"])) {
                             $price = $_GET["price"];
-                            $sqlstatement = $conn->prepare("SELECT Inventory_ID, VIN, intake_date, reserved, price from inventory WHERE reserved = \"No\" AND price < ?");
+                            $sqlstatement = $conn->prepare("SELECT Inventory_ID, inventory.VIN, year, make, model, color, mileage, intake_date, reserved, price FROM inventory NATURAL JOIN vehicle WHERE reserved = \"No\" AND price < ?");
                             $sqlstatement->bind_param("d", $price);
                         }
 
@@ -122,8 +162,12 @@
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>
-                                <td>".$row["Inventory_ID"]."</td>
-                                <td><a href=\"./inventory.php?VIN=".$row["VIN"]."\">".$row["VIN"]."</td>
+                                <td><a href=\"./inventory.php?VININFO=".$row["VIN"]."\">".$row["Inventory_ID"]."</td>
+                                <td>".$row["year"]."</td>
+                                <td>".$row["make"]."</td>
+                                <td>".$row["model"]."</td>
+                                <td>".$row["color"]."</td>
+                                <td>".$row["mileage"]."</td>
                                 <td>".$row["intake_date"]."</td>
                                 <td>".$row["reserved"]."</td>
                                 <td>".$row["price"]."</td>
@@ -136,7 +180,7 @@
 
             <?php 
             
-                if (!empty($_GET["VIN"])) {
+                if (!empty($_GET["VININFO"])) {
                     echo "
                         <h1>Selected Vehicle Info</h1>
                         <div class=\"vehicle-info\">
@@ -161,7 +205,7 @@
                             <tbody>";
                             
                             $vinfo = $conn->prepare("SELECT VIN, year, make, model, color, mileage, isnew, custom from vehicle WHERE VIN = ?");
-                            $VIN = $_GET["VIN"];
+                            $VIN = $_GET["VININFO"];
 
                             $vinfo->bind_param("s", $VIN);
 
@@ -190,41 +234,6 @@
 
             ?>
 
-            <div class="inventory-entry">
-                <h2>New Inventory Entry Form:</h2>
-
-                <form action="inventory.php" method="get">
-                    <p>Enter a New Vehicle Inventory ID:</p> <input type="text" size="9" minlength="9" name="Inventory_ID">
-                    <p>Enter Vehicle VIN:</p> <input type="text" size="17" minlength="17" name="VIN">
-                    <p>Is the Vehicle Reserved?</p>
-                    <input type="radio" name="reserved" value="Yes">Yes</input>
-                    <input type="radio" name="reserved" value="No" checked>No</input>
-                    <p>Enter Vehicle Price:</p> <input type="text" size="10" name="vehprice">
-                    <input type="hidden" name="form_submitted" value="1">
-                    <input type="submit" value="Submit">
-                </form>
-            </div>
-
-            <?php 
-            
-                if (isset($_GET["form_submitted"])) {
-                    if (!empty($_GET["Inventory_ID"]) && !empty($_GET["VIN"]) && !empty($_GET["reserved"]) && !empty($_GET["vehprice"])) {
-                        $Inventory_ID = $_GET["Inventory_ID"];
-                        $VIN = $_GET["VIN"];
-                        $reserved = $_GET["reserved"];
-                        $price = $_GET["vehprice"];
-
-                        $sql = $conn->prepare("INSERT INTO inventory (Inventory_ID, VIN, reserved, price) VALUES(?,?,?,?)");
-                        $sql->bind_param("sssd", $Inventory_ID, $VIN, $reserved, $price);
-                        $sql->execute();
-                        echo $sql->error;
-                        $sql->close();
-                    } else {
-                        echo "Please fill in all of the vehicle's information.";
-                    }
-                }
-
-            ?>
 
         </section>
 
