@@ -143,7 +143,7 @@
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
                             echo "<tr>
-                            <td>".$row["CUSTOMER_ID"]."</td>
+                            <td><a href=\"./customers.php?CINFO=".$row["CUSTOMER_ID"]."\">".$row["CUSTOMER_ID"]."</td>
                             <td>".$row["first_name"]."</td>
                             <td>".$row["last_name"]."</td>
                             <td>".$row["email"]."</td>
@@ -157,6 +157,54 @@
 
             </tbody>
             </table>
+
+            <?php 
+            
+                if (!empty($_GET["CINFO"])) {
+                    echo "
+                        <h1>Selected Customer Sales History</h1>
+                        <div class=\"customer-info\">
+                            <table class=\"content-table\" id=\"myTable\"> 
+
+                    
+
+                            <hr>
+            
+                            <thead>
+                                <tr>
+                                    <th>Sale ID</th>
+                                    <th>Agreed Price</th>
+                                    <th>Sale Date</th>
+                                    <th>VIN</th>
+                                </tr>
+                            </thead>
+                            <tbody>";
+                            
+                            $cinfo = $conn->prepare("SELECT SALE_ID, sale_price, sale_date, VIN, CUSTOMER_ID FROM sales WHERE CUSTOMER_ID = ?");
+                            $CID = $_GET["CINFO"];
+
+                            $cinfo->bind_param("s", $CID);
+
+                            $cinfo->execute();
+                            $resultcinfo = $cinfo->get_result();
+            
+                            $cinfo->close();
+    
+                            if ($resultcinfo->num_rows > 0) {
+                                while ($row = $resultcinfo->fetch_assoc()) {
+                                    echo "<tr>
+                                    <td>".$row["SALE_ID"]."</td>
+                                    <td>".$row["sale_price"]."</td>
+                                    <td>".$row["sale_date"]."</td>
+                                    <td>".$row["VIN"]."</td>
+                                    </tr>";
+                                }
+                            }
+                    echo "</tbody></table>";
+
+                }
+
+            ?>
 
         </section>
 
