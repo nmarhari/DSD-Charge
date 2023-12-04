@@ -107,10 +107,12 @@
 
             <div class="inventory-operations">
                 <h1><a href="./inventory.php">View All Inventory</a></h1>
-                <h1><a href="./inventory.php?query=forsale">View Vehicles Not Reserved</a><h1>
+                <h1><a href="./inventory.php?query=forsale">View Vehicles Not Reserved</a></h1>
+                <h1><a href="./inventory.php?query=new">View New Vehicles Only</a></h1>
+                <h1><a href="./inventory.php?query=used">View Used Vehicles Only</a></h1>
                 <div class="inventory-price">
                     <form action="inventory.php" method="get">
-                        <p>View Vehicles By Desired Price Limit:</p> <input type="text" size="10" name="price">
+                        <h1>View Vehicles By Desired Price Limit:</h1> <input type="text" size="10" name="price">
                         <input type="submit" value="Go">
                     </form>
                 </div>
@@ -141,11 +143,16 @@
                     
                         $query = $_GET["query"];
 
-                        if ($query == "forsale") {
-                            $sqlstatement = $conn->prepare("SELECT Inventory_ID, inventory.VIN, year, make, model, color, mileage, intake_date, reserved, price FROM inventory NATURAL JOIN vehicle WHERE reserved = \"No\"");
-                        }  else { // catch all
+                        if (empty($_GET["query"])) { // catch all
                             $sqlstatement = $conn->prepare("SELECT Inventory_ID, inventory.VIN, year, make, model, color, mileage, intake_date, reserved, price FROM inventory NATURAL JOIN vehicle");
-                        }
+                        } else if ($query == "forsale") {
+                            $sqlstatement = $conn->prepare("SELECT Inventory_ID, inventory.VIN, year, make, model, color, mileage, intake_date, reserved, price FROM inventory NATURAL JOIN vehicle WHERE reserved = \"No\"");
+                        } else if ($query == "used") {
+                            $sqlstatement = $conn->prepare("SELECT Inventory_ID, inventory.VIN, year, make, model, color, mileage, intake_date, reserved, price FROM inventory NATURAL JOIN vehicle WHERE isnew = \"No\"");
+                        } else if ($query == "new") {
+                            $sqlstatement = $conn->prepare("SELECT Inventory_ID, inventory.VIN, year, make, model, color, mileage, intake_date, reserved, price FROM inventory NATURAL JOIN vehicle WHERE isnew = \"Yes\"");
+                        } 
+                        
 
                         if (!empty($_GET["price"])) {
                             $price = $_GET["price"];
