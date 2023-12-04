@@ -114,6 +114,41 @@
 
             ?>
 
+            <div class="update-phone">
+                <h1>Update a Customer's Phone Number</h1>
+
+                <form action="customers.php" method="get">
+                <p>Enter Customer's ID:</p> <input type="text" size="10" minlength="9" name="Customer_ID_edit">
+                <p>Enter Customer's New Phone Number</p> <input type="text" size="15" minlength="5" name="phone_number_edit">
+                <p>Enter Customer's New Phone Type:</p> <input type="text" size="10" name="type_edit">
+                <br>
+                <input type="hidden" name="form_submitted_edit" value="1">
+                <input type="submit" value="Submit">
+                </form>
+
+            </div>
+
+            <?php 
+            
+                if (isset($_GET["form_submitted_edit"])) {
+                    if (!empty($_GET["Customer_ID_edit"]) && !empty($_GET["phone_number_edit"]) && !empty($_GET["type_edit"])) {
+                        $Customer_ID_edit = $_GET["Customer_ID_edit"];
+                        $phone_number_edit = $_GET["phone_number_edit"];
+                        $type_edit = $_GET["type_edit"];
+
+                        $sqledit = $conn->prepare("UPDATE customer_phone SET phone_number = ?, type = ? WHERE CUSTOMER_ID = ?"); 
+                        $sqledit->bind_param("sss", $phone_number_edit, $type_edit, $Customer_ID_edit);
+                        $sqledit->execute();
+                        echo $sqledit->error;
+                        $sqledit->close();
+                        
+                    } else {
+                        echo "Please fill in all of the customer's new contact information.";
+                    }
+                }
+
+            ?>
+
             <h2>All Customers:</h2>
             <table class="content-table" id="myTable"> 
 
