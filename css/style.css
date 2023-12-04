@@ -268,3 +268,14 @@ hr {
 * {
     overflow-x: none;
 }
+
+.commentbox {
+    width: 50%;
+    height: 100px;
+    text-wrap: wrap;
+    vertical-align: text-top;
+}
+
+.service-entry {
+    padding: 20px 0;
+}
