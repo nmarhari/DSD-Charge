@@ -78,6 +78,7 @@
                     <p>Enter Customer's Email:</p> <input type="text" size="40" minlength="5" name="email">
                     <p>Enter Customer's Phone Number:</p> <input type="text" size="15" minlength="5" name="phone_number">
                     <p>Enter Customer's Phone Type:</p> <input type="text" size="10" name="type">
+                    <br>
                     <input type="hidden" name="form_submitted" value="1">
                     <input type="submit" value="Submit">
                 </form>

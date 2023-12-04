@@ -81,6 +81,7 @@
                     <p>Enter Agreed Price:</p> <input type="text" size="10" name="price">
                     <p>Enter Vehicle's VIN:</p> <input type="text" size="17" minlength="17" name="VIN">
                     <p>Enter Customer's ID:</p> <input type="text" size="10" minlength="9" name="Customer_ID">
+                    <br>
                     <input type="hidden" name="form_submitted" value="1">
                     <input type="submit" value="Submit">
                 </form>
